@@ -117,14 +117,18 @@ if(playBtn){
 
 
 
-        }else{
+                }else{
 
 
             audio.src = streamURL;
 
             audio.load();
 
-            audio.play();
+            audio.play().catch(error => {
+
+                console.log("Error de audio:", error);
+
+            });
 
 
             playBtn.innerHTML="❚❚";
@@ -205,31 +209,33 @@ const cover = document.querySelector(".cover img");
 if(cover){
 
     let image =
-data.art ||
-data.cover ||
-data.artwork ||
-data.image ||
-data.albumart ||
-data.song_image;
+    data.art ||
+    data.cover ||
+    data.artwork ||
+    data.image ||
+    data.albumart ||
+    data.song_image;
 
 
-    if(image){
+    if(image && !image.includes("nocover.png")){
 
-    cover.src = image;
+        cover.src = image;
 
-    cover.onerror = () => {
+        cover.onerror = () => {
+
+            cover.src = "img/logo.png";
+
+        };
+
+    }else{
 
         cover.src = "img/logo.png";
 
-    };
-
-}else{
-
-    cover.src = "img/logo.png";
+    }
 
 }
 
-}
+
 
 
 
@@ -247,20 +253,15 @@ data.song_image;
 
 
 
-    }catch(error){
-
+        }catch(error){
 
         console.log(
             "Esperando información del servidor"
         );
 
-
     }
 
-
-
 }
-
 
 
 // actualizar cada 30 segundos
